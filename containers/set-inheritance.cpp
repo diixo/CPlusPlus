@@ -1,40 +1,48 @@
-
 #include <set>
+#include <memory>
+using namespace std;
 
-///////////////////////////////////////////
-// 1. Modern C++20 solution:
-
-auto cmp = [](int a, int b) { return ...; };
-std::set<int, decltype(cmp)> s;
-
-///////////////////////////////////////////
-// 2. Modern C++11 solution:
-
-auto cmp = [](int a, int b) { return ...; };
-std::set<int, decltype(cmp)> s(cmp);
-
-///////////////////////////////////////////
-// 3. Similar to first solution, but with function instead of lambda:
-
-bool cmp(int a, int b) {
-    return false;
-}
-
-// Then use it, either this way:
-std::set<int, decltype(cmp)*> s(cmp);
-
-// or this way:
-std::set<int, decltype(&cmp)> s(&cmp);
-
-///////////////////////////////////////////
-// 4. Old solution using struct with () operator:
-struct cmp {
-    bool operator() (int a, int b) const {
-        return ...;
-    }
+class AA
+{
+///
 };
 
-// ...
-// later
-std::set<int, cmp> s;
+class BB : public AA
+{
+///
+};
 
+auto cmp = [](const AA* const& a, const AA* const& b) -> bool
+{ return true; };
+
+std::set<AA*, decltype(cmp)> s(cmp);
+
+/////////////////////////////////////////////////////////////
+
+class Vehicle
+{
+   friend struct cmp;
+   int mId = -1;  // while it did not parked
+
+public:
+   struct cmp
+   {
+      bool operator() (const Vehicle* const &a, const Vehicle* const &b) const
+      {
+         return a->mId < b->mId;
+      }
+
+      bool operator() (const std::unique_ptr<Vehicle> &a, const std::unique_ptr<Vehicle> &b) const
+      {
+         return a->mId < b->mId;
+      }
+   };
+};
+
+int main()
+{
+    std::set <std::unique_ptr<Vehicle>, Vehicle::cmp> vehicles1;
+    std::set <Vehicle*, Vehicle::cmp> vehicles2;
+
+    return 0;
+}
