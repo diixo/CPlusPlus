@@ -16,6 +16,8 @@ public:
       , _data(new int[length])
    {}
 
+   size_t Length() const { return _length; }
+
    ~MemoryBlock()
    {
       if (_data != nullptr)
@@ -42,11 +44,6 @@ public:
          std::copy(other._data, other._data + _length, _data);
       }
       return *this;
-   }
-
-   size_t Length() const
-   {
-      return _length;
    }
 
 private:

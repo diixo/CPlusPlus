@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <functional>
 
 using namespace std;
 
@@ -23,4 +24,12 @@ int main()
    }(4);
 
    cout << m << endl << n << endl;
+}
+
+////////////////////////////
+int main()
+{
+    int a = 1;
+    function<int()> func = [a](){  return a + 1; }; // a is direct initialized
+    int n = func();
 }
