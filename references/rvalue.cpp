@@ -1,3 +1,6 @@
+
+// https://learn.microsoft.com/ru-ru/cpp/cpp/rvalue-reference-declarator-amp-amp?view=msvc-140
+
 // reference-overload.cpp
 // Compile with: /EHsc
 #include <iostream>

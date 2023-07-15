@@ -1,0 +1,10 @@
+
+#folder build
+x64/
+build/
+build-x64/
+build_x64/
+*.user
+*vscode/
+Jamfile*
+*cache.txt
