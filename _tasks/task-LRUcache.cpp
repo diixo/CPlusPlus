@@ -9,11 +9,18 @@ struct item
    int key;
    int value;
 
-   item() = default;
+   item() = delete;
    item(const item&) = default;
    item& operator=(const item&) = default;
 
    ~item() { std::cout << "~dtor\n"; }
+
+   item(int k, int v) : key(k), value(v) {}
+
+   item(item&& pair) : key(pair.key), value(pair.value)
+   {
+      std::cout << "(item&&)" << std::endl;
+   }
 };
 
 class LRUcache
@@ -26,7 +33,7 @@ class LRUcache
 
 public:
 
-   LRUcache(int sz) : mSize(sz) {}
+   explicit LRUcache(int sz) : mSize(sz) {}
 
    int get(int key)
    {
@@ -36,7 +43,7 @@ public:
          return -1;
       }
 
-      auto itm = *(iter->second);
+      item itm = *(iter->second);
       mDeque.erase(iter->second);
 
       //////////////////////////////////////////////////////////////////////////
@@ -58,14 +65,14 @@ public:
             mDeque.pop_back();
          }
          
-         mDeque.push_front(item{ key, value });
+         mDeque.push_front(item(key, value));
          mMap[key] = mDeque.begin();
       }
       else
       {
          // rewrite exist item with new value
          mDeque.erase(iter->second);
-         mDeque.push_front(item{ key, value });
+         mDeque.push_front(item(key, value));
          iter->second = mDeque.begin();
       }
    }
