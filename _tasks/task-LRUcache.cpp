@@ -13,7 +13,37 @@ struct item
 
 class LRUcache
 {
+   int mSize;
+
+   std::map<int, std::list<item>::iterator> mMap;
+
+   std::list<item> mDeque;
+
 public:
+
+   LRUcache(int sz) : mSize(sz) {}
+
+   int get(int key)
+   {
+      auto iter = mMap.find(key);
+      if (iter == mMap.end())
+      {
+         return -1;
+      }
+
+      auto itm = *(iter->second);
+      mDeque.erase(iter->second);
+
+      //////////////////////////////////////////////////////////////////////////
+      mDeque.push_front(itm);
+      mMap[key] = mDeque.begin();
+      return itm.value;
+   }
+
+   void put(int key, int value)
+   {
+      //
+   }
 
 };
 
