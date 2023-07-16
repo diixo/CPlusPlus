@@ -9,7 +9,7 @@ tuple<int, string, double> f()
     int i{ 108 };
     string s{ "Some text" };
     double d{ .01 };
-    return { i,s,d };
+    return { i, s, d };
 }
 struct S
 {

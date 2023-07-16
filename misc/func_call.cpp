@@ -5,6 +5,7 @@ typedef void(*ptf)();
 void func()
 {
 }
+
 struct S
 {
    operator ptf()
