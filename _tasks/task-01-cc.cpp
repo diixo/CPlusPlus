@@ -64,7 +64,7 @@ struct A
    {}
 };
 
-struct B : public A
+struct B final : public A
 {
    int* data;
 
@@ -111,12 +111,17 @@ struct B : public A
       return *this;
    }
 
-   virtual void say()
+   virtual void say() override
    {
       std::cout << "B::say=" << *data << std::endl;
    }
 
    explicit operator int() const
+   {
+      return *data;
+   }
+
+   explicit operator int&()
    {
       return *data;
    }
@@ -143,6 +148,11 @@ int main(int, char**)
    // call operator=(&&)
    t = test(B(125));
    t = B(23);
+
+   // int cast
+   (int)t = 47;
+   int value = (int)t;
+
 
    a->say();
 
