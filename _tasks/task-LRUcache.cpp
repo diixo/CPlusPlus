@@ -47,7 +47,7 @@ public:
       mDeque.erase(iter->second);
 
       //////////////////////////////////////////////////////////////////////////
-      mDeque.push_front(itm);
+      mDeque.push_front(itm);    // : mDeque.emplace_front()
       mMap[key] = mDeque.begin();
       return itm.value;
    }
@@ -65,14 +65,14 @@ public:
             mDeque.pop_back();
          }
          
-         mDeque.push_front(item(key, value));
+         mDeque.push_front(item(key, value));   // : mDeque.emplace_front()
          mMap[key] = mDeque.begin();
       }
       else
       {
          // rewrite exist item with new value
          mDeque.erase(iter->second);
-         mDeque.push_front(item(key, value));
+         mDeque.push_front(item(key, value));   // : mDeque.emplace_front()
          iter->second = mDeque.begin();
       }
    }
