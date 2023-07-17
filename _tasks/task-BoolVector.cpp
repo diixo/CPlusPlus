@@ -13,8 +13,7 @@ public:
    CBoolVector()
       : mMemory(0)
       , mBoolCapacity(0)
-   {
-   }
+   {}
 
    CBoolVector(const CBoolVector& boolVector)
       : mMemory(0)
@@ -23,7 +22,7 @@ public:
       if (mBoolCapacity)
       {
          const size_t sz = boolVector.size() / 8 + 1;
-         mMemory = new unsigned char [sz];
+         mMemory = new unsigned char[sz];
          memcpy(mMemory, boolVector.mMemory, sz);
       }
    }
@@ -33,22 +32,20 @@ public:
       const size_t new_sz = mBoolCapacity + 1;
       if (mBoolCapacity % 8 == 0)
       {
-         unsigned char* newMemory = new unsigned char[new_sz/8 + 1];
+         unsigned char* newMemory = new unsigned char[new_sz / 8 + 1];
 
          if (mMemory)
          {
             memcpy(newMemory, mMemory, mBoolCapacity / 8);
-            memset(&newMemory[new_sz/8], 0, 1);
+            memset(&newMemory[new_sz / 8], 0, 1);
             delete[] mMemory;
          }
 
          mMemory = newMemory;
       }
       ++mBoolCapacity;
-      if (value)
-         set(mBoolCapacity-1);
-      else
-         reset(mBoolCapacity-1);
+
+      set(value, mBoolCapacity - 1);
    }
 
    bool get(const size_t id) const
@@ -58,18 +55,18 @@ public:
       return (result != 0);
    }
 
-   void set(size_t id) const
+   void set(bool value, size_t id) const
    {
       unsigned char* bptr = &mMemory[id / 8];
 
-      *bptr |= unsigned char(1 << (id % 8));
-   }
-
-   void reset(size_t id) const
-   {
-      unsigned char* bptr = &mMemory[id / 8];
-
-      *bptr &= ~(unsigned char(1 << (id % 8)));
+      if (value)
+      {
+         *bptr |= unsigned char(1 << (id % 8));
+      }
+      else
+      {
+         *bptr &= ~(unsigned char(1 << (id % 8)));
+      }
    }
 
    size_t size() const
@@ -82,5 +79,60 @@ public:
       if (mMemory) delete[] mMemory;
    }
 
+   //////////////////////////////////////////////////////////////////////////
+
+   class CRef
+   {
+      CRef();
+
+   public:
+
+      const CBoolVector& mVector;
+      size_t mId;
+
+      CRef(const CBoolVector& boolVec, size_t id)
+         : mVector(boolVec)
+         , mId(id)
+      {}
+
+      CRef& operator = (const bool value)
+      {
+         mVector.set(value, mId);
+         return *this;
+      }
+
+      operator bool() const
+      {
+         return mVector.get(mId);
+      }
+   };
+
+   //////////////////////////////////////////////////////////////////////////
+
+   const CRef operator[](size_t id) const
+   {
+      return CRef(*this, id);
+   }
+
+   CRef operator[](size_t id)
+   {
+      return CRef(*this, id);
+   }
+
 };
 
+int main()
+{
+   CBoolVector bv;
+
+   bool b = true;
+   bv.push_back(b);
+
+   bv[0] = true;
+   bv[5] = true;
+
+   b = bv[0];
+   b = bv[5];
+
+   return 0;
+}
