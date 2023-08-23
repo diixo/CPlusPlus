@@ -22,7 +22,7 @@ struct A
       std::cout << "A::say=" << data << std::endl;
    }
 
-   virtual ~A()
+   ~A()
    {
       delete[] data;
    }

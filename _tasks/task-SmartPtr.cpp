@@ -2,19 +2,15 @@
 class RefCounter
 {
 private:
-   int count; // Reference count
-
+   int count;
 public:
    void AddRef()
    {
-      // Increment the reference count
       count++;
    }
 
    int Release()
    {
-      // Decrement the reference count and
-      // return the reference count.
       return --count;
    }
 };
@@ -36,9 +32,6 @@ public:
 
    ~UPtr()
    {
-      // Destructor
-      // Decrement the reference count
-      // if reference become zero delete the data
       if (pRef->Release() == 0)
       {
          delete pData;
@@ -58,8 +51,7 @@ public:
 
    UPtr<T>& operator = (const UPtr<T>& sp)
    {
-      // Assignment operator
-      if (this != &sp) // Avoid self assignment
+      if (this != &sp)
       {
          // Decrement the old reference count
          // if reference become zero delete the old data
