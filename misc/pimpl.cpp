@@ -1,4 +1,6 @@
 
+// https://learn.microsoft.com/ru-ru/cpp/cpp/pimpl-for-compile-time-encapsulation-modern-cpp?view=msvc-150
+
 #include <memory>
 
 using namespace std;

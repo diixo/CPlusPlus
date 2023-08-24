@@ -1,3 +1,5 @@
+
+// https://learn.microsoft.com/ru-ru/cpp/cpp/object-lifetime-and-resource-management-modern-cpp?view=msvc-150
 // RAII-principles: resource acquisition is initialization
 
 #include <memory>
@@ -32,7 +34,7 @@ public:
       return *this;
    }
 
-   widget& operator=(widget&& w)
+   widget& operator=(widget&& w) noexcept
    {
       if (this == &w)
       {
@@ -47,7 +49,7 @@ public:
       return *this;
    }
 
-   widget(widget&& w)
+   widget(widget&& w) noexcept
    {
       std::swap(data, w.data);
       std::swap(sz, w.sz);

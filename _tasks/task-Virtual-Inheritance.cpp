@@ -1,4 +1,6 @@
 
+// https://learn.microsoft.com/ru-ru/cpp/cpp/multiple-base-classes?view=msvc-150
+
 class Animal
 {
 
