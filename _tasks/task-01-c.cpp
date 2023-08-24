@@ -9,12 +9,41 @@ struct A
    char* data;
 
    explicit A(const char* msg = 0)
-      : data(new char[msg ? strlen(msg) : 0 + 1])
+      : data(nullptr)
    {
       if (msg)
       {
-         memcpy(data, msg, strlen(msg));
+         auto len = strlen(msg) + 1; 
+         data = new char[len];
+         strcpy_s(data, len, msg);
       }
+   }
+
+   A(const A& rhs)
+   {
+      if (rhs.data)
+      {
+         auto len = strlen(rhs.data) + 1;
+         data = new char[len];
+         strcpy_s(data, len, rhs.data);
+      }
+   }
+
+   A& operator = (const A& rhs)
+   {
+      if (this != &rhs)
+      {
+         delete[] this->data;    // no need to check for nullptr
+         this->data = nullptr;
+
+         if (rhs.data)
+         {
+            auto len = strlen(rhs.data) + 1;
+            data = new char[len];
+            strcpy_s(data, len, rhs.data);
+         }
+      }
+      return *this;
    }
 
    virtual void say()
@@ -22,9 +51,10 @@ struct A
       std::cout << "A::say=" << data << std::endl;
    }
 
-   ~A()
+   virtual ~A()
    {
-      delete data;
+      // no need to check data
+      delete[] data;
    }
 };
 
@@ -55,7 +85,8 @@ int main(int, char**)
 
    b->say();
 
-   b* = a*;
+   //b* = a*; error
+   *a = *b; // OK
 
    b->say();
 
