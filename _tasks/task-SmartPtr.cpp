@@ -4,12 +4,13 @@ class RefCounter
 private:
    int count;
 public:
+   RefCounter() : count(1) {}
    void AddRef()
    {
       count++;
    }
 
-   int Release()
+   int DelRef()
    {
       return --count;
    }
@@ -27,12 +28,11 @@ public:
 
    UPtr() : pData(0), pRef(0) {}
 
-   UPtr(T* pValue) : pData(pValue)
-   {}
+   UPtr(T* pValue) : pData(pValue), pRef(new RefCounter()) {}
 
    ~UPtr()
    {
-      if (pRef->Release() == 0)
+      if (pRef && pRef->DelRef() == 0)
       {
          delete pData;
          delete pRef;
@@ -49,16 +49,32 @@ public:
       return pData;
    }
 
+   T* get() const
+   {
+      return pData;
+   }
+
+   void reset(T* ptr)
+   {
+      if (pRef && pRef->DelRef() == 0)
+      {
+         delete pData;
+         delete pRef;
+      }
+      pData = ptr;
+      pRef = new RefCounter();
+   }
+
    UPtr<T>& operator = (const UPtr<T>& sp)
    {
       if (this != &sp)
       {
          // Decrement the old reference count
          // if reference become zero delete the old data
-         if (pRef->Release() == 0)
+         if (pRef && pRef->DelRef() == 0)
          {
             delete pData;
-            delete reference;
+            delete pRef;
          }
 
          // Copy the data and reference pointer
