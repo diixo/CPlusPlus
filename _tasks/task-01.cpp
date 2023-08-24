@@ -24,7 +24,7 @@ struct A
 
    ~A()
    {
-      delete[] data;
+      delete data;
    }
 };
 

@@ -1,9 +1,13 @@
 
 // https://learn.microsoft.com/ru-ru/cpp/cpp/object-lifetime-and-resource-management-modern-cpp?view=msvc-150
+
 // RAII-principles: resource acquisition is initialization
+
+#pragma warning(disable : 4996)
 
 #include <memory>
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 class widget
