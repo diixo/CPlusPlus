@@ -15,9 +15,11 @@ struct item
 
    ~item() { std::cout << "~dtor\n"; }
 
-   item(int k, int v) : key(k), value(v) {}
+   item(int k, int v)
+      : key(k), value(v) {}
 
-   item(item&& pair) : key(pair.key), value(pair.value)
+   item(item&& pair)
+      : key(pair.key), value(pair.value)
    {
       std::cout << "(item&&)" << std::endl;
    }
