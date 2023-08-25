@@ -59,10 +59,12 @@ public:
    {
       unsigned char* bptr = &mMemory[id / 8];
 
+      // set
       if (value)
       {
          *bptr |= unsigned char(1 << (id % 8));
       }
+      // reset
       else
       {
          *bptr &= ~(unsigned char(1 << (id % 8)));
