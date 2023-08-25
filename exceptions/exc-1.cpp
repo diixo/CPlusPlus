@@ -8,7 +8,7 @@ using namespace std;
 
 void MyFunc(int c)
 {
-    if (c > numeric_limits< char> ::max())
+    if (c > numeric_limits <char> ::max())
         throw invalid_argument("MyFunc argument too large.");
     //...
 }
